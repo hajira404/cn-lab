@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<limits.h>
+
+#define MAX_CITY 4
+
+int findClosestCity(int dist[MAX_CITY][MAX_CITY], int currCity, int visited[MAX_CITY]){
+	int minDist = INT_MAX;
+	int closetCity = -1;
+
+	for(int i = 0; i < MAX_CITY; i++){
+		if(!visited[i] && dist[currCity][i] < minDist){
+			minDist = dist[currCity][i];
+			closetCity = i;
+		}
+	}
+	return closetCity;
+}
+int totalPathDist(int dist[MAX_CITY][MAX_CITY], int path[MAX_CITY]){
+	int totalDist = 0;
+	for(int i =0; i < MAX_CITY - 1; i++){
+		totalDist += dist[path[i]][path[i+1]];
+	}
+	totalDist += dist[path[MAX_CITY - 1]][path[0]];
+	return totalDist;
+}
+
+int main(){
+	int dist[4][4] = {{0,10,15,20},
+			{10,0,35,25},
+			{15,35,0,30},
+			{20,25,30,0}};
+	int visited[MAX_CITY] = {0};
+	int path[MAX_CITY];
+	int currCity = 0;
+	visited[currCity] = 1;
+	path[0] = currCity;
+	for(int i =1; i<MAX_CITY; i++){
+		int closestCity = findClosestCity(dist, currCity, visited);
+		visited[closestCity] = 1;
+		path[i] = closestCity;
+		currCity = closestCity;
+	}
+
+	int totDist = totalPathDist(dist, path);
+	printf("Path: ");
+	for(int i =0; i< MAX_CITY; i++){
+		printf("%d ", path[i]);
+	}
+	printf("\n");
+	printf("The total distance is: %d\n", totDist);
+}

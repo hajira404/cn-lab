@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+#define BUCKET_SIZE 10
+#define OUTPUT_RATE 1
+
+int main(){
+	int bucket_size = BUCKET_SIZE;
+	int token = BUCKET_SIZE;
+	int last_updated = time(NULL);
+	
+	int num_packets;
+	printf("Enter num of packets: ");
+	scanf("%d", &num_packets);
+
+	int packets[num_packets];
+
+	printf("Enter the size of each packet:");
+	for(int i =0; i<num_packets; i++){
+		printf("Packet %d: ", i+1);
+		scanf("%d", &packets[i]);
+	}
+	
+	for(int i =0; i<num_packets; i++){
+		sleep(1);
+		int curr_update = time(NULL);
+		int elapsed_time = curr_update - last_updated;
+		if(elapsed_time > 0){
+			token += elapsed_time * OUTPUT_RATE;
+			if(token > bucket_size){
+				token = bucket_size;
+			}
+			last_updated = curr_update;
+		}
+		printf("Sending packet %d of size %d \n", i+1, packets[i]);
+		if(packets[i] <= token){
+			token -= packets[i];
+			printf("Packet sent, remioning token %d\n", token);
+		} else {
+			printf("Packet sending failed\n");
+		}
+	}
+}

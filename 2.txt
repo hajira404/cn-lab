@@ -1,0 +1,50 @@
+#include<stdio.h>
+#include<limits.h>
+
+#define MAX 10
+
+int cost[MAX][MAX], dist[MAX], via[MAX];
+int nodes;
+
+void take_input(){
+	printf("Enter the no fo nodes: ");
+	scanf("%d", &nodes);
+	
+	for(int i = 0; i< nodes; i++){
+		for(int j = 0; j < nodes; j++){
+			scanf("%d", &cost[i][j]);
+			if(i == j){
+				cost[i][j] = 0;
+			}
+		}
+	}
+}
+
+void dvc(){
+	for(int source = 0; source < nodes; source++){
+		for(int i =0; i < nodes; i++){
+			dist[i] = cost[source][i];
+			via[i] = (cost[source][i] != MAX && source != i) ? i : -1;
+		}
+		for(int k = 0; k < nodes - 1; k++){
+			for(int i =0; i<nodes; i++){
+				for(int j = 0; j<nodes; j++){
+					if(dist[i] != MAX && cost[i][j] != MAX && dist[i] + cost[i][j] < dist[j]){
+						dist[j] = cost[i][j] + dist[i];
+						via[j] = i;
+					}
+				}
+			}
+		}
+		printf("Source: %d\n", source);
+		for(int i = 0; i<nodes; i++){
+			printf("%d %d %d\n",i, dist[i], via[i]);
+		}
+	}
+
+}
+int main(){
+	take_input();
+	dvc();
+	return 0;
+}
