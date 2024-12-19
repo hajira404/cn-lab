@@ -19,6 +19,7 @@ void calculate_crc(char *input, char *output){
 }
 
 int main(){
+	printf("Enter the generator bits: %s\n",divisor);
 	printf("Enter the data to be transfered: ");
 	fgets(data, sizeof(data), stdin);
 	strtok(data, "\n");
@@ -36,9 +37,9 @@ int main(){
 	calculate_crc(frame, divident);
 
 	if(strcmp(divident, "0000000000000000") == 0){
-		printf("No error\n");
+		printf("crc is%s\nRecieved frame is error free\n",divident);
 	} else {
-		printf("There is error\n");
+		printf("crc is %s\nRecieved frame has one or more errors\n",divident);
 	}
 
 }
