@@ -19,7 +19,7 @@ int main(){
 	inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
 	
 	connect(socc, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-
+	printf("Client online :Success\n");
 	while(1){
 		fgets(buffer, BUFFER_SIZE, stdin);
 		buffer[strcspn(buffer, "\n")] = 0;
